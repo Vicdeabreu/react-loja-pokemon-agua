@@ -1,11 +1,32 @@
-import React from 'react';
+import React, {useState, useEffect} from 'react';
+import {getAllPokemon} from './services/pokemon';
 import './App.css';
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faBars,faCartPlus,faShoppingCart,faWindowClose,faChevronDown } from "@fortawesome/free-solid-svg-icons";
 
 function App() {
+  const [pokemonData, setPokemonData] = useState([]);
+  const [nextUrl, setNextUrl] = useState('');
+  const [prevUrl, setPrevUrl] = useState('');
+  const [loading, setLoading] = useState(true);
+  const initialUrl = 'https://pokeapi.co/api/v2/type/11/'
+
+  useEffect(() => {
+    async function fetchData(){
+      let response = await getAllPokemon(initialUrl);
+      console.log(response);
+      setNextUrl(response.next);
+      setPrevUrl(response.previous);
+      setLoading(false);
+    }
+    fetchData();
+  }, [])
+
   return (
     <>
+    {loading ? <h1>Loading...</h1> : (
+      <h1>Data is fetched</h1>
+    )}
     <nav className="navbar">
     <div className="navbar-center">
       <span className="nav-icon">
