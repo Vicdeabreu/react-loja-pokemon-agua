@@ -1,5 +1,6 @@
 import React, {useState, useEffect} from 'react';
-import {getAllPokemon} from './services/pokemon';
+import {getAllPokemon, getPokemon} from './services/pokemon';
+import Card from './components/Card'
 import './App.css';
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faBars,faCartPlus,faShoppingCart,faWindowClose,faChevronDown } from "@fortawesome/free-solid-svg-icons";
@@ -14,13 +15,21 @@ function App() {
   useEffect(() => {
     async function fetchData(){
       let response = await getAllPokemon(initialUrl);
-      console.log(response);
       setNextUrl(response.next);
       setPrevUrl(response.previous);
+      let pokemon = await loadingPokemon(response.pokemon);
       setLoading(false);
     }
     fetchData();
   }, [])
+
+  const loadingPokemon = async (data) => {
+    let _pokemonData = await Promise.all(
+      data.map(async pokemon => {
+      let pokemonRecord = await getPokemon(pokemon.pokemon.url);
+      return pokemonRecord
+    }))
+  }
 
   return (
     <>
@@ -53,18 +62,13 @@ function App() {
       <div className="section-title">
         <h2>Nossos pokémon</h2>
       </div>
-      <div className="products-center">
 
+      <div className="products-center">
         <article className="product">
-          <div className="img-container">
-            <img src="../img/squirtle.jpg" alt="squirtle" className="product-img"/>
-            <button className="bag-btn" data-id="1">
-              <FontAwesomeIcon icon={faShoppingCart} />
-              Adicionar ao carrinho
-            </button>
-          </div>
-          <h3>Squirtle</h3>
-          <h4>R$ 20</h4>
+          {pokemonData.map((pokemon, i) => {
+            console.log(pokemonData);
+            return <Card key={i} pokemon={pokemon} />
+          })}
         </article>
 
         <div className="cart-overlay">
