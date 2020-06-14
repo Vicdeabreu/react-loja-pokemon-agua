@@ -23,12 +23,31 @@ function App() {
     fetchData();
   }, [])
 
+  const next = async () => {
+    setLoading(true);
+    let data = await getAllPokemon(nextUrl);
+    await loadingPokemon(data.results);
+    setNextUrl(data.next);
+    setPrevUrl(data.previous);
+    setLoading(false);
+  }
+
+  const prev = async () => {
+    if(!prevUrl) return;
+    setLoading(true);
+    let data = await getAllPokemon(prevUrl);
+    await loadingPokemon(data.pokemon);
+    setNextUrl(data.next);
+    setPrevUrl(data.previous);
+    setLoading(false);
+  }
+
   const loadingPokemon = async (data) => {
-    let _pokemonData = await Promise.all(
-      data.map(async pokemon => {
+    let _pokemonData = await Promise.all(data.map(async pokemon => {
       let pokemonRecord = await getPokemon(pokemon.pokemon.url);
       return pokemonRecord
     }))
+    setPokemonData(_pokemonData);
   }
 
   return (
@@ -64,12 +83,10 @@ function App() {
       </div>
 
       <div className="products-center">
-        <article className="product">
           {pokemonData.map((pokemon, i) => {
             console.log(pokemonData);
-            return <Card key={i} pokemon={pokemon} />
+            return <Card key={i} pokemon={pokemon}/>
           })}
-        </article>
 
         <div className="cart-overlay">
           <div className="cart">

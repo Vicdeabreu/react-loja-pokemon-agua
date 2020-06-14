@@ -3,8 +3,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import '../index.css';
 import { faBars,faCartPlus,faShoppingCart,faWindowClose,faChevronDown } from "@fortawesome/free-solid-svg-icons";
 
-function Card({pokemon}) {
-  console.log(pokemon)
+function Card({ pokemon }) {
   return (
     <article className="product"> 
       <div className="img-container">
