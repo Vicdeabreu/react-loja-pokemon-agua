@@ -38,6 +38,11 @@ body {
   justify-content: space-between;
   padding: 0 1.5rem;
 }
+
+.navbar-center button {
+  border: none;
+}
+
 .nav-icon {
   font-size: 1.5rem;
 }
@@ -94,7 +99,7 @@ body {
 /* --------------- Produtos ---------------- */
 
 .product {
-  padding: 4rem 0;
+  padding: 2rem 0;
 }
 .section-title h2 {
   text-align: center;
@@ -108,8 +113,8 @@ body {
   margin: 0 auto;
   max-width: 1170px;
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
-  grid-column-gap: 1.5rem;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  grid-column-gap: 1.0rem;
   grid-row-gap: 2rem;
 }
 .img-container {
@@ -161,6 +166,13 @@ body {
   margin-top: 0.7rem;
   letter-spacing: var(--mainSpacing);
   color: var(--primaryColor);
+  text-align: center;
+}
+
+.product h5 {
+  margin-top: 0.7rem;
+  letter-spacing: var(--mainSpacing);
+  color: var(--mainBlack);
   text-align: center;
 }
 

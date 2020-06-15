@@ -12,6 +12,19 @@ function App() {
   const [loading, setLoading] = useState(true);
   const initialUrl = 'https://pokeapi.co/api/v2/type/11/'
 
+  const cartBtn = document.querySelector(".cart-btn");
+  const closeCartBtn = document.querySelector(".close-cart");
+  const clearCartBtn = document.querySelector(".clear-cart");
+  const cartDOM = document.querySelector(".cart");
+  const cartOverlay = document.querySelector(".cart-overlay");
+  const cartItem = document.querySelector(".cart-items");
+  const cartTotal = document.querySelector(".cart-total");
+  const cartContent = document.querySelector(".cart-content");
+  const productsDOM = document.querySelector(".products-center");
+
+// carrinho
+let cart = [];
+
   useEffect(() => {
     async function fetchData(){
       let response = await getAllPokemon(initialUrl);
@@ -26,7 +39,7 @@ function App() {
   const next = async () => {
     setLoading(true);
     let data = await getAllPokemon(nextUrl);
-    await loadingPokemon(data.results);
+    await loadingPokemon(data.pokemon);
     setNextUrl(data.next);
     setPrevUrl(data.previous);
     setLoading(false);
@@ -48,6 +61,14 @@ function App() {
       return pokemonRecord
     }))
     setPokemonData(_pokemonData);
+    // console.log(_pokemonData)
+
+    class Storage {
+      static saveProducts(pokemon){
+        localStorage.setItem("pokemons",JSON.stringify(_pokemonData))
+      }
+    }
+  
   }
 
   return (
@@ -62,9 +83,11 @@ function App() {
       </span>
       <img src="./img/logo.png" width="10%" alt="pokemon azul store logo"/>
       <div className="cart-btn">
-        <span className="nav-icon">
-          <FontAwesomeIcon icon={faCartPlus} />
-        </span>
+        <button onClick="openCart()">
+          <span className="nav-icon">
+            <FontAwesomeIcon icon={faCartPlus} />
+          </span>
+        </button>
         <div className="cart-items">0</div>
       </div>
     </div>
@@ -84,7 +107,6 @@ function App() {
 
       <div className="products-center">
           {pokemonData.map((pokemon, i) => {
-            console.log(pokemonData);
             return <Card key={i} pokemon={pokemon}/>
           })}
 
@@ -120,7 +142,6 @@ function App() {
 
       </div>
     </section>
-    <script src="https://kit.fontawesome.com/780139cf13.js" crossorigin="anonymous"></script>
     </>
   );
 }
